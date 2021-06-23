@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import Header from '../header/header.jsx';
+import Header from '../header/header';
+import {AppRoute} from '../../const';
 
 function NotFoundScreen() {
   return (
@@ -9,7 +10,7 @@ function NotFoundScreen() {
 
       <main className="page__main" style={{textAlign: 'center'}}>
         <h1>404. Page not found</h1>
-        <Link to="/">Go back to homepage</Link>
+        <Link to={AppRoute.MAIN}>Go back to homepage</Link>
       </main>
     </div>
   );

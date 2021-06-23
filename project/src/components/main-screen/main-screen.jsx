@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Card from '../card/card.jsx';
-import Header from '../header/header.jsx';
+import OffersList from '../offers-list/offers-list.jsx';
+import offerProp from '../offer/offer.prop';
+import {OffersType} from '../../const';
+import Header from '../header/header';
 
-function MainScreen(props) {
-  const {cardsCount} = props;
+function MainScreen({offers}) {
+  const [activeOffer, setActiveOffer] = useState(null);
 
   return (
     <div className="page page--gray page--main">
@@ -68,9 +70,7 @@ function MainScreen(props) {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {new Array(cardsCount).fill('place').map((item, index) => <Card key={`${item}${index + 1}`} />)}
-              </div>
+              <OffersList offers={offers} offersType={OffersType.MAIN} onMouseEnter={(activeOfferId) => setActiveOffer({...activeOffer, id: activeOfferId})}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
@@ -83,7 +83,7 @@ function MainScreen(props) {
 }
 
 MainScreen.propTypes = {
-  cardsCount: PropTypes.number.isRequired,
+  offers: PropTypes.arrayOf(offerProp).isRequired,
 };
 
 export default MainScreen;

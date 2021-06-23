@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
+import offers from './mocks/offers';
+import {adaptOfferToClient} from './utils';
 
-const Setting = {
-  CARDS_COUNT: 5,
-};
+const adaptedOffers = offers.map((offer) => adaptOfferToClient(offer));
 
 ReactDOM.render(
   <React.StrictMode>
     <App
-      cardsCount={Setting.CARDS_COUNT}
+      offers={adaptedOffers}
     />
   </React.StrictMode>,
   document.getElementById('root'));
