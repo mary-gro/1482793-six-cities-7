@@ -28,3 +28,16 @@ export const OffersType = {
     imageHeight: 110,
   },
 };
+
+export const MarkerType = {
+  DEFAULT: {
+    iconUrl: 'img/pin.svg',
+    iconSize: [27, 40],
+    iconAnchor: [15, 30],
+  },
+  ACTIVE: {
+    iconUrl: 'img/pin-active.svg',
+    iconSize: [27, 40],
+    iconAnchor: [15, 30],
+  },
+};

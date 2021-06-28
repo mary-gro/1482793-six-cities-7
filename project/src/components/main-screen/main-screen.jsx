@@ -4,9 +4,10 @@ import OffersList from '../offers-list/offers-list.jsx';
 import offerProp from '../offer/offer.prop';
 import {OffersType} from '../../const';
 import Header from '../header/header';
+import Map from '../map/map';
 
 function MainScreen({offers}) {
-  const [activeOffer, setActiveOffer] = useState(null);
+  const [activeOfferId, setActiveOfferId] = useState(null);
 
   return (
     <div className="page page--gray page--main">
@@ -70,10 +71,12 @@ function MainScreen({offers}) {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <OffersList offers={offers} offersType={OffersType.MAIN} onMouseEnter={(activeOfferId) => setActiveOffer({...activeOffer, id: activeOfferId})}/>
+              <OffersList offers={offers} offersType={OffersType.MAIN} setActiveOfferId={setActiveOfferId} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map offers={offers} activeOfferId={activeOfferId} />
+              </section>
             </div>
           </div>
         </div>
