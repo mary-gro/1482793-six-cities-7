@@ -5,13 +5,14 @@ import {PropertyType, OffersType} from '../../const';
 import {getRating} from '../../utils';
 import offerProp from './offer.prop';
 
-function Offer({offer, offersType, onMouseEnter}) {
+function Offer({offer, offersType, setActiveOfferId}) {
   const {id, isFavorite, isPremium, previewImage, price, rating, title, type} = offer;
 
   return (
     <article
       className={`${offersType.class} place-card`}
-      onMouseEnter={offersType.type === OffersType.MAIN.type ? () => onMouseEnter(offer.id) : null}
+      onMouseEnter={() => setActiveOfferId(id)}
+      onMouseLeave={() => setActiveOfferId(null)}
     >
       {(isPremium && offersType.type === OffersType.MAIN.type)
       && (
@@ -57,7 +58,7 @@ function Offer({offer, offersType, onMouseEnter}) {
 Offer.propTypes = {
   offer: offerProp,
   offersType: PropTypes.object.isRequired,
-  onMouseEnter: PropTypes.func,
+  setActiveOfferId: PropTypes.func,
 };
 
 export default Offer;
