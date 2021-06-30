@@ -75,7 +75,7 @@ function MainScreen({offers}) {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={offers} activeOfferId={activeOfferId} />
+                <Map offers={offers} activeOfferId={activeOfferId} city={offers[0].city} />
               </section>
             </div>
           </div>

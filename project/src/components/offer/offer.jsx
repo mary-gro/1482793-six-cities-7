@@ -11,8 +11,12 @@ function Offer({offer, offersType, setActiveOfferId}) {
   return (
     <article
       className={`${offersType.class} place-card`}
-      onMouseEnter={() => setActiveOfferId(id)}
-      onMouseLeave={() => setActiveOfferId(null)}
+      onMouseEnter={offersType.type === OffersType.MAIN.type ? () => {
+        setActiveOfferId(id);
+      } : null}
+      onMouseLeave={offersType.type === OffersType.MAIN.type ? () => {
+        setActiveOfferId(null);
+      } : null}
     >
       {(isPremium && offersType.type === OffersType.MAIN.type)
       && (

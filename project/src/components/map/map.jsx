@@ -9,8 +9,7 @@ import useMap from '../../hooks/use-map/use-map';
 const defaultMarker = leaflet.icon(MarkerType.DEFAULT);
 const activeMarker = leaflet.icon(MarkerType.ACTIVE);
 
-function Map({offers, activeOfferId}) {
-  const city = offers[0].city;
+function Map({offers, activeOfferId, city}) {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -51,6 +50,7 @@ function Map({offers, activeOfferId}) {
 Map.propTypes = {
   offers: PropTypes.arrayOf(offerProp).isRequired,
   activeOfferId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  city: PropTypes.object.isRequired,
 };
 
 export default Map;
