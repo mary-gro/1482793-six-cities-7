@@ -8,9 +8,9 @@ import RoomScreen from '../room-screen/room-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import {AppRoute} from '../../const';
 import offerProp from '../offer/offer.prop';
+import reviewProp from '../review/review.prop';
 
-function App(props) {
-  const {offers} = props;
+function App({offers, reviews}) {
 
   return (
     <BrowserRouter>
@@ -31,6 +31,7 @@ function App(props) {
         <Route exact path={AppRoute.ROOM}>
           <RoomScreen
             offers={offers}
+            reviews={reviews}
           />
         </Route>
         <Route>
@@ -43,6 +44,7 @@ function App(props) {
 
 App.propTypes = {
   offers: PropTypes.arrayOf(offerProp).isRequired,
+  reviews: PropTypes.arrayOf(reviewProp).isRequired,
 };
 
 export default App;

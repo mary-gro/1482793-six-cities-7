@@ -15,6 +15,7 @@ export const PropertyType = {
 export const OffersType = {
   MAIN: {
     type: 'main',
+    listClass: 'cities__places-list places__list tabs__content',
     class: 'cities__place-card',
     wrapper: 'cities__image-wrapper',
     imageWidth: 260,
@@ -22,10 +23,19 @@ export const OffersType = {
   },
   FAVORITES: {
     type: 'favorite',
+    listClass: 'favorites__places',
     class: 'favorites__card',
     wrapper: 'favorites__image-wrapper',
     imageWidth: 150,
     imageHeight: 110,
+  },
+  NEARBY: {
+    type: 'offer',
+    listClass: 'near-places__list places__list',
+    class: 'near-places__card',
+    wrapper: 'near-places__image-wrapper',
+    imageWidth: 260,
+    imageHeight: 200,
   },
 };
 

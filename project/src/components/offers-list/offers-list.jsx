@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 function OffersList({offers, offersType, setActiveOfferId}) {
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <div className={`${offersType.listClass}`}>
       {
         offers.map((offer) => (
           <Offer
