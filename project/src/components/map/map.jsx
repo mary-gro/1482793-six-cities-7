@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import offerProp from '../offer/offer.prop';
+import cityProp from '../cities-list/city.prop';
 import {MarkerType} from '../../const';
 import useMap from '../../hooks/use-map/use-map';
 
@@ -31,12 +32,14 @@ function Map({offers, activeOfferId, city}) {
           })
           .addTo(markers);
       });
+
+      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom);
     }
 
     return () => {
       markers.clearLayers();
     };
-  }, [map, offers, activeOfferId]);
+  }, [map, offers, city, activeOfferId]);
 
   return (
     <div
@@ -50,7 +53,7 @@ function Map({offers, activeOfferId, city}) {
 Map.propTypes = {
   offers: PropTypes.arrayOf(offerProp).isRequired,
   activeOfferId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  city: PropTypes.object.isRequired,
+  city: cityProp,
 };
 
 export default Map;

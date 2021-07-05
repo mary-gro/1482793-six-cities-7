@@ -7,30 +7,24 @@ import LoginScreen from '../login-screen/login-screen';
 import RoomScreen from '../room-screen/room-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import {AppRoute} from '../../const';
-import offerProp from '../offer/offer.prop';
 import reviewProp from '../review/review.prop';
 
-function App({offers, reviews}) {
+function App({reviews}) {
 
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.MAIN}>
-          <MainScreen
-            offers={offers}
-          />
+          <MainScreen />
         </Route>
         <Route exact path={AppRoute.FAVORITES}>
-          <FavoritesScreen
-            offers={offers}
-          />
+          <FavoritesScreen  />
         </Route>
         <Route exact path={AppRoute.LOGIN}>
           <LoginScreen />
         </Route>
         <Route exact path={AppRoute.ROOM}>
           <RoomScreen
-            offers={offers}
             reviews={reviews}
           />
         </Route>
@@ -43,7 +37,6 @@ function App({offers, reviews}) {
 }
 
 App.propTypes = {
-  offers: PropTypes.arrayOf(offerProp).isRequired,
   reviews: PropTypes.arrayOf(reviewProp).isRequired,
 };
 

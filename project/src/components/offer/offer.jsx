@@ -61,7 +61,14 @@ function Offer({offer, offersType, setActiveOfferId}) {
 
 Offer.propTypes = {
   offer: offerProp,
-  offersType: PropTypes.object.isRequired,
+  offersType: PropTypes.shape({
+    type: PropTypes.string,
+    listClass: PropTypes.string,
+    class: PropTypes.string,
+    wrapper: PropTypes.string,
+    imageWidth: PropTypes.number,
+    imageHeight: PropTypes.number,
+  }).isRequired,
   setActiveOfferId: PropTypes.func,
 };
 

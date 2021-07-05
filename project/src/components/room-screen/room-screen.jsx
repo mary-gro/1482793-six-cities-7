@@ -1,5 +1,6 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../header/header';
 import ReviewForm from '../review-form/review-form';
@@ -134,4 +135,9 @@ RoomScreen.propTypes = {
   reviews: PropTypes.arrayOf(reviewProp).isRequired,
 };
 
-export default RoomScreen;
+const mapStateToProps = (state) => ({
+  offers: state.offers,
+});
+
+export {RoomScreen};
+export default connect(mapStateToProps)(RoomScreen);

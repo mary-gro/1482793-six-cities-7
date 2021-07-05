@@ -1,3 +1,5 @@
+import {SortType} from './const';
+
 const PERCENTS = 100;
 const MAX_RATING = 5;
 
@@ -40,3 +42,19 @@ export const adaptReviewToClient = (review) => {
 
   return adaptedReview;
 };
+
+const sortOffers = (offers, type, city) => {
+  const offersByCity = offers.filter((offer) => offer.city.name === city);
+  switch (type) {
+    case SortType.LOW_TO_HIGH.name:
+      return offersByCity.sort((a, b) => a.price - b.price);
+    case SortType.HIGH_TO_LOW.name:
+      return offersByCity.sort((a, b) => b.price - a.price);
+    case SortType.TOP_RATED.name:
+      return offersByCity.sort((a, b) => b.rating - a.rating);
+    default:
+      return offersByCity;
+  }
+};
+
+export {sortOffers};
