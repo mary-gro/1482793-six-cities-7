@@ -51,3 +51,73 @@ export const MarkerType = {
     iconAnchor: [15, 30],
   },
 };
+
+export const Cities = {
+  PARIS: {
+    name: 'Paris',
+    location: {
+      latitude: 48.864716,
+      longitude: 2.349014,
+      zoom: 12,
+    },
+  },
+  COLOGNE: {
+    name: 'Cologne',
+    location: {
+      latitude: 50.935173,
+      longitude: 6.953101,
+      zoom: 12,
+    },
+  },
+  BRUSSELS: {
+    name: 'Brussels',
+    location: {
+      latitude: 50.85045,
+      longitude: 4.34878,
+      zoom: 16,
+    },
+  },
+  AMSTERDAM: {
+    name: 'Amsterdam',
+    location: {
+      latitude: 52.38333,
+      longitude: 4.9,
+      zoom: 12,
+    },
+  },
+  HAMBURG: {
+    name: 'Hamburg',
+    location: {
+      latitude: 53.551086,
+      longitude: 9.993682,
+      zoom: 12,
+    },
+  },
+  DUSSELDORF: {
+    name: 'Dusseldorf',
+    location: {
+      latitude: 51.233334,
+      longitude: 6.783333,
+      zoom: 12,
+    },
+  },
+};
+
+export const SortType = {
+  DEFAULT: {
+    name: 'default',
+    description: 'Popular',
+  },
+  LOW_TO_HIGH: {
+    name: 'lowPrice',
+    description: 'Price: low to high',
+  },
+  HIGH_TO_LOW: {
+    name: 'highPrice',
+    description: 'Price: high to low',
+  },
+  TOP_RATED: {
+    name: 'topRated',
+    description: 'Top rated first',
+  },
+};
