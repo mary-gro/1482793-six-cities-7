@@ -62,14 +62,14 @@ function Offer({offer, offersType, setActiveOfferId}) {
 Offer.propTypes = {
   offer: offerProp,
   offersType: PropTypes.shape({
-    type: PropTypes.string,
-    listClass: PropTypes.string,
-    class: PropTypes.string,
-    wrapper: PropTypes.string,
-    imageWidth: PropTypes.number,
-    imageHeight: PropTypes.number,
+    type: PropTypes.string.isRequired,
+    listClass: PropTypes.string.isRequired,
+    class: PropTypes.string.isRequired,
+    wrapper: PropTypes.string.isRequired,
+    imageWidth: PropTypes.number.isRequired,
+    imageHeight: PropTypes.number.isRequired,
   }).isRequired,
-  setActiveOfferId: PropTypes.func,
+  setActiveOfferId: PropTypes.func.isRequired,
 };
 
 export default Offer;

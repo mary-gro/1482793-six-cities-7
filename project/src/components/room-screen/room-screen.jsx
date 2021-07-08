@@ -137,6 +137,7 @@ RoomScreen.propTypes = {
 
 const mapStateToProps = (state) => ({
   offers: state.offers,
+  reviews: state.reviews,
 });
 
 export {RoomScreen};

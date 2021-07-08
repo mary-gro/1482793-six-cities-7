@@ -5,6 +5,14 @@ export const AppRoute = {
   MAIN: '/',
 };
 
+export const APIRoute = {
+  OFFERS: '/hotels',
+  LOGIN: '/login',
+  LOGOUT: '/logout',
+  FAVORITE: '/favorite',
+  REVIEWS: '/comments',
+};
+
 export const PropertyType = {
   apartment: 'Apartment',
   room: 'Private Room',
@@ -120,4 +128,10 @@ export const SortType = {
     name: 'topRated',
     description: 'Top rated first',
   },
+};
+
+export const AuthorizationStatus = {
+  AUTH: 'AUTH',
+  NO_AUTH: 'NO_AUTH',
+  UNKNOWN: 'UNKNOWN',
 };

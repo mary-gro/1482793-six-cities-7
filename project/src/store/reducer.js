@@ -1,13 +1,16 @@
 import {ActionType} from './action';
-import {Cities, SortType} from '../const';
-import {adaptOfferToClient} from '../utils';
-import offers from '../mocks/offers';
+import {Cities, SortType, AuthorizationStatus} from '../const';
+import {adaptReviewToClient} from '../utils';
+import reviews from '../mocks/reviews';
 
 const initialState = {
   city: Cities.PARIS.name,
-  offers: offers.map((offer) => adaptOfferToClient(offer)),
+  offers: [],
+  reviews: reviews.map((review) => adaptReviewToClient(review)),
   sortType: SortType.DEFAULT,
   activeOfferId: null,
+  authorizationStatus: AuthorizationStatus.UNKNOWN,
+  isDataLoaded: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,6 +24,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         offers: action.payload,
+        isDataLoaded: true,
       };
     case ActionType.CHANGE_ACTIVE_OFFER:
       return {
@@ -31,6 +35,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         sortType: action.payload,
+      };
+    case ActionType.REQUIRED_AUTHORIZATION:
+      return {
+        ...state,
+        authorizationStatus: action.payload,
+      };
+    case ActionType.LOGOUT:
+      return {
+        ...state,
+        authorizationStatus: AuthorizationStatus.NO_AUTH,
       };
     default:
       return state;

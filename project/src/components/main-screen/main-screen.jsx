@@ -8,6 +8,7 @@ import Header from '../header/header';
 import Map from '../map/map';
 import CitiesList from '../cities-list/cities-list';
 import SortList from '../sort-list/sort-list';
+import EmptyOffersList from '../empty-offers-list/empty-offers-list';
 import {sortOffers} from '../../utils';
 
 function MainScreen({offers, city, activeOfferId}) {
@@ -20,18 +21,26 @@ function MainScreen({offers, city, activeOfferId}) {
         <h1 className="visually-hidden">Cities</h1>
         <CitiesList />
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} places to stay in {city}</b>
-              <SortList />
-              <OffersList offers={offers} offersType={OffersType.MAIN} activeOfferId={activeOfferId} />
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map offers={offers} activeOfferId={activeOfferId} city={Cities[city.toUpperCase()]} />
-              </section>
-            </div>
+          <div className={`cities__places-container container ${(offers.length > 0) ? '' : 'cities__places-container--empty'}`}>
+            {
+              !(offers.length > 0)
+                ? <EmptyOffersList />
+                : (
+                  <>
+                    <section className="cities__places places">
+                      <h2 className="visually-hidden">Places</h2>
+                      <b className="places__found">{offers.length} places to stay in {city}</b>
+                      <SortList />
+                      <OffersList offers={offers} offersType={OffersType.MAIN} activeOfferId={activeOfferId} />
+                    </section>
+                    <div className="cities__right-section">
+                      <section className="cities__map map">
+                        <Map offers={offers} activeOfferId={activeOfferId} city={Cities[city.toUpperCase()]} />
+                      </section>
+                    </div>
+                  </>
+                )
+            }
           </div>
         </div>
       </main>
@@ -48,7 +57,7 @@ const mapStateToProps = (state) => ({
 MainScreen.propTypes = {
   offers: PropTypes.arrayOf(offerProp).isRequired,
   city: PropTypes.string.isRequired,
-  activeOfferId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  activeOfferId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };
 
 export {MainScreen};

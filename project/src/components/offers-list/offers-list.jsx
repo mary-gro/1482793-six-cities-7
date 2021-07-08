@@ -32,7 +32,7 @@ OffersList.propTypes = {
     imageWidth: PropTypes.number,
     imageHeight: PropTypes.number,
   }).isRequired,
-  setActiveOfferId: PropTypes.func,
+  setActiveOfferId: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
