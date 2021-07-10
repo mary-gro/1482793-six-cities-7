@@ -52,8 +52,8 @@ function Map({offers, activeOfferId, city}) {
 
 Map.propTypes = {
   offers: PropTypes.arrayOf(offerProp).isRequired,
-  activeOfferId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  city: cityProp,
+  activeOfferId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  city: cityProp.isRequired,
 };
 
 export default Map;

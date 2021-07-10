@@ -44,9 +44,9 @@ function SortList({sortType, onSortingChange}) {
 SortList.propTypes = {
   onSortingChange: PropTypes.func.isRequired,
   sortType: PropTypes.shape({
-    name: PropTypes.string,
-    description: PropTypes.string,
-  }),
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
