@@ -1,8 +1,9 @@
 export const AppRoute = {
   LOGIN: '/login',
   FAVORITES: '/favorites',
-  ROOM: '/offer/:id',
+  ROOM: '/offer',
   MAIN: '/',
+  NOT_FOUND: '/404',
 };
 
 export const APIRoute = {

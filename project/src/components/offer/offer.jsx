@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {PropertyType, OffersType} from '../../const';
 import {getRating} from '../../utils';
+import {AppRoute} from '../../const';
 import offerProp from './offer.prop';
 
 function Offer({offer, offersType, setActiveOfferId}) {
@@ -25,7 +26,7 @@ function Offer({offer, offersType, setActiveOfferId}) {
         </div>
       )}
       <div className={`${offersType.wrapper} place-card__image-wrapper`}>
-        <Link to={`/offer/${id}`}>
+        <Link to={`${AppRoute.ROOM}/${id}`}>
           <img className="place-card__image" src={previewImage} width={offersType.imageWidth} height={offersType.imageHeight} alt="Place"/>
         </Link>
       </div>
@@ -49,7 +50,7 @@ function Offer({offer, offersType, setActiveOfferId}) {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>
+          <Link to={`${AppRoute.ROOM}/${id}`}>
             {title}
           </Link>
         </h2>

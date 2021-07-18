@@ -57,7 +57,7 @@ const mapStateToProps = (state) => ({
 MainScreen.propTypes = {
   offers: PropTypes.arrayOf(offerProp).isRequired,
   city: PropTypes.string.isRequired,
-  activeOfferId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  activeOfferId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export {MainScreen};

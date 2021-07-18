@@ -1,5 +1,4 @@
-import React from 'react';
-import {useParams} from 'react-router-dom';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../header/header';
@@ -7,18 +6,25 @@ import ReviewForm from '../review-form/review-form';
 import ReviewsList from '../reviews-list/reviews-list';
 import Map from '../map/map';
 import OffersList from '../offers-list/offers-list';
-import {OffersType} from '../../const';
+import {OffersType, AuthorizationStatus} from '../../const';
+import {fetchOffer, fetchReviews, fetchNearbyOffers} from '../../store/api-actions';
 import {getRating} from '../../utils';
+import Loading from '../loading/loading';
 import offerProp from '../offer/offer.prop';
 import reviewProp from '../review/review.prop';
 
-const NEARBY_OFFERS_COUNT = 3;
+function RoomScreen({id, currentOffer, getOffer, reviews, nearbyOffers, isOfferDataLoaded, authorizationStatus}) {
+  useEffect(() => {
+    getOffer(id);
+  }, [id, getOffer]);
 
-function RoomScreen({offers, reviews}) {
-  const {id} = useParams();
-  const currentOffer = offers.find((offer) => offer.id.toString() === id);
   const {bedrooms, description, goods, host, images, isFavorite, isPremium, maxAdults, price, rating, title, type} = currentOffer;
-  const nearbyOffers = offers.filter((offer) => offer !== currentOffer).slice(0, NEARBY_OFFERS_COUNT);
+
+  if (!isOfferDataLoaded) {
+    return (
+      <Loading />
+    );
+  }
 
   return (
     <div className="page">
@@ -111,12 +117,12 @@ function RoomScreen({offers, reviews}) {
                 <ReviewsList
                   reviews={reviews}
                 />
-                <ReviewForm />
+                {authorizationStatus === AuthorizationStatus.AUTH ? <ReviewForm id={currentOffer.id} /> : ''}
               </section>
             </div>
           </div>
           <section className="property__map map">
-            <Map offers={offers} activeOfferId={currentOffer.id} city={currentOffer.city} />
+            <Map offers={[...nearbyOffers, currentOffer]} activeOfferId={currentOffer.id} city={currentOffer.city} />
           </section>
         </section>
         <div className="container">
@@ -131,14 +137,30 @@ function RoomScreen({offers, reviews}) {
 }
 
 RoomScreen.propTypes = {
-  offers: PropTypes.arrayOf(offerProp).isRequired,
+  id: PropTypes.string,
+  currentOffer: offerProp,
   reviews: PropTypes.arrayOf(reviewProp).isRequired,
+  nearbyOffers: PropTypes.arrayOf(offerProp),
+  authorizationStatus: PropTypes.string.isRequired,
+  getOffer: PropTypes.func.isRequired,
+  isOfferDataLoaded: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
-  offers: state.offers,
+  currentOffer: state.offer,
   reviews: state.reviews,
+  nearbyOffers: state.nearbyOffers,
+  authorizationStatus: state.authorizationStatus,
+  isOfferDataLoaded: state.isDataLoaded,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getOffer(id) {
+    dispatch(fetchOffer(id));
+    dispatch(fetchNearbyOffers(id));
+    dispatch(fetchReviews(id));
+  },
 });
 
 export {RoomScreen};
-export default connect(mapStateToProps)(RoomScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RoomScreen);

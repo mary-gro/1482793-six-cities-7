@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
+import {connect} from 'react-redux';
 import ReviewRating from '../review-rating/review-rating';
+import {addReview} from '../../store/api-actions';
+import PropTypes from 'prop-types';
 
-function ReviewForm() {
+function ReviewForm({id, submitReview}) {
   const [review, setReview] = useState({rating: '', text: ''});
 
   const onFieldChange = (evt) => {
@@ -11,6 +14,9 @@ function ReviewForm() {
 
   const onFormSubmit = (evt) => {
     evt.preventDefault();
+
+    submitReview(id, review.text, review.rating);
+    setReview({rating: '', text: ''});
   };
 
   return (
@@ -20,7 +26,7 @@ function ReviewForm() {
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
-        name="review"
+        name="text"
         placeholder="Tell how was your stay, what you like and what can be improved"
         onChange={onFieldChange}
         value={review.text}
@@ -36,4 +42,16 @@ function ReviewForm() {
   );
 }
 
-export default ReviewForm;
+ReviewForm.propTypes = {
+  id: PropTypes.number.isRequired,
+  submitReview: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  submitReview(...data) {
+    dispatch(addReview(...data));
+  },
+});
+
+export {ReviewForm};
+export default connect(null, mapDispatchToProps)(ReviewForm);
