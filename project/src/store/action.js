@@ -5,6 +5,11 @@ export const ActionType = {
   SORT_OFFERS: '/sortOffers',
   REQUIRED_AUTHORIZATION: 'user/requiredAuthorization',
   LOGOUT: 'user/logout',
+  REDIRECT_TO_ROUTE: 'login/redirect',
+  ADD_EMAIL: 'login/addEmail',
+  LOAD_OFFER: 'data/loadOffer',
+  LOAD_NEARBY_OFFERS: 'data/loadNearbyOffers',
+  LOAD_REVIEWS: 'data/loadReviews',
 };
 
 export const ActionCreator = {
@@ -30,5 +35,25 @@ export const ActionCreator = {
   }),
   logout: () => ({
     type: ActionType.LOGOUT,
+  }),
+  redirectToRoute: (url) => ({
+    type: ActionType.REDIRECT_TO_ROUTE,
+    payload: url,
+  }),
+  addEmail: (email) => ({
+    type: ActionType.ADD_EMAIL,
+    payload: email,
+  }),
+  loadOffer: (offer) => ({
+    type: ActionType.LOAD_OFFER,
+    payload: offer,
+  }),
+  loadNearbyOffers: (offers) => ({
+    type: ActionType.LOAD_NEARBY_OFFERS,
+    payload: offers,
+  }),
+  loadReviews: (reviews) => ({
+    type: ActionType.LOAD_REVIEWS,
+    payload: reviews,
   }),
 };

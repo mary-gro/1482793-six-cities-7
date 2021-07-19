@@ -1,16 +1,18 @@
 import {ActionType} from './action';
 import {Cities, SortType, AuthorizationStatus} from '../const';
-import {adaptReviewToClient} from '../utils';
-import reviews from '../mocks/reviews';
 
 const initialState = {
   city: Cities.PARIS.name,
   offers: [],
-  reviews: reviews.map((review) => adaptReviewToClient(review)),
+  offer: {},
+  reviews: [],
+  nearbyOffers: [],
   sortType: SortType.DEFAULT,
   activeOfferId: null,
   authorizationStatus: AuthorizationStatus.UNKNOWN,
   isDataLoaded: false,
+  isOfferDataLoaded: false,
+  userEmail: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -45,6 +47,27 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authorizationStatus: AuthorizationStatus.NO_AUTH,
+      };
+    case ActionType.ADD_EMAIL:
+      return {
+        ...state,
+        userEmail: action.payload,
+      };
+    case ActionType.LOAD_OFFER:
+      return {
+        ...state,
+        offer: action.payload,
+        isOfferDataLoaded: true,
+      };
+    case ActionType.LOAD_NEARBY_OFFERS:
+      return {
+        ...state,
+        nearbyOffers: action.payload,
+      };
+    case ActionType.LOAD_REVIEWS:
+      return {
+        ...state,
+        reviews: action.payload,
       };
     default:
       return state;

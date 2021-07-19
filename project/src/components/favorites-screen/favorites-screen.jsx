@@ -1,14 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import OffersList from '../offers-list/offers-list';
 import offerProp from '../offer/offer.prop';
-import {OffersType} from '../../const';
+import {OffersType, AppRoute} from '../../const';
 
 function FavoritesScreen({offers}) {
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
+  const favoriteOffersByCity = offers
+    .reduce((favoriteOffers, offer) => {
+      favoriteOffers[offer.city.name] = [...(favoriteOffers[offer.city.name] || []), offer];
+      return favoriteOffers;
+    }, {});
 
   return (
     <div className="page">
@@ -19,16 +24,22 @@ function FavoritesScreen({offers}) {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="/#">
-                      <span>Amsterdam</span>
-                    </a>
+              {Object.keys(favoriteOffersByCity).map((city) => (
+                <li className="favorites__locations-items" key={city}>
+                  <div className="favorites__locations locations locations--current">
+                    <div className="locations__item">
+                      <Link to={AppRoute.MAIN} className="locations__item-link">
+                        <span>{city}</span>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-                <OffersList offers={favoriteOffers} offersType={OffersType.FAVORITES}/>
-              </li>
+
+                  <OffersList
+                    offers={favoriteOffersByCity[city]}
+                    offersType={OffersType.FAVORITES}
+                  />
+                </li>
+              ))}
             </ul>
           </section>
         </div>
