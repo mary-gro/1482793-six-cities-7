@@ -1,13 +1,21 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {PropertyType, OffersType} from '../../const';
 import {getRating} from '../../utils';
 import {AppRoute} from '../../const';
 import offerProp from './offer.prop';
+import {addFavorite} from '../../store/api-actions';
 
 function Offer({offer, offersType, setActiveOfferId}) {
   const {id, isFavorite, isPremium, previewImage, price, rating, title, type} = offer;
+  const dispatch = useDispatch();
+  const status = isFavorite ? 0 : 1;
+
+  const onBookmarkClick = () => {
+    dispatch(addFavorite(id, status));
+  };
 
   return (
     <article
@@ -36,7 +44,7 @@ function Offer({offer, offersType, setActiveOfferId}) {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`${isFavorite ? 'place-card__bookmark-button--active' : ''} place-card__bookmark-button button`} type="button">
+          <button className={`${isFavorite ? 'place-card__bookmark-button--active' : ''} place-card__bookmark-button button`} type="button" onClick={onBookmarkClick}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -73,4 +81,4 @@ Offer.propTypes = {
   setActiveOfferId: PropTypes.func.isRequired,
 };
 
-export default Offer;
+export default React.memo(Offer);

@@ -1,19 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import OffersList from '../offers-list/offers-list';
-import offerProp from '../offer/offer.prop';
+import EmptyFavoritesList from '../empty-favorites-list/empty-favorites-list';
 import {OffersType, AppRoute} from '../../const';
+import {getFavorites} from '../../store/data/selectors';
+import {fetchFavorites} from '../../store/api-actions';
 
-function FavoritesScreen({offers}) {
-  const favoriteOffersByCity = offers
-    .reduce((favoriteOffers, offer) => {
-      favoriteOffers[offer.city.name] = [...(favoriteOffers[offer.city.name] || []), offer];
-      return favoriteOffers;
-    }, {});
+function FavoritesScreen() {
+  const dispatch = useDispatch();
+  const favoriteOffers = useSelector(getFavorites);
+
+  useEffect(() => {
+    dispatch(fetchFavorites());
+  }, [dispatch]);
+
+  if (favoriteOffers.length === 0) {
+    return <EmptyFavoritesList />;
+  }
+
+  const favoriteCities = Array.from(new Set(favoriteOffers.map((offer) => offer.city.name)));
+  const favoriteOffersByCity = (city) => favoriteOffers.filter((item) => item.city.name === city);
 
   return (
     <div className="page">
@@ -24,7 +33,7 @@ function FavoritesScreen({offers}) {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {Object.keys(favoriteOffersByCity).map((city) => (
+              {favoriteCities.map((city) => (
                 <li className="favorites__locations-items" key={city}>
                   <div className="favorites__locations locations locations--current">
                     <div className="locations__item">
@@ -35,7 +44,7 @@ function FavoritesScreen({offers}) {
                   </div>
 
                   <OffersList
-                    offers={favoriteOffersByCity[city]}
+                    offers={favoriteOffersByCity(city)}
                     offersType={OffersType.FAVORITES}
                   />
                 </li>
@@ -49,14 +58,4 @@ function FavoritesScreen({offers}) {
   );
 }
 
-FavoritesScreen.propTypes = {
-  offers: PropTypes.arrayOf(offerProp).isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  offers: state.offers.filter(({isFavorite}) => isFavorite),
-});
-
-export {FavoritesScreen};
-
-export default connect(mapStateToProps)(FavoritesScreen);
+export default FavoritesScreen;

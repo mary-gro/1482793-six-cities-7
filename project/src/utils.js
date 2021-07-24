@@ -3,7 +3,7 @@ import {SortType} from './const';
 const PERCENTS = 100;
 const MAX_RATING = 5;
 
-export const getRating = (rating) => rating * PERCENTS / MAX_RATING;
+export const getRating = (rating) => Math.round(rating) * PERCENTS / MAX_RATING;
 
 export const adaptOfferToClient = (offer) => {
   const adaptedOffer = {
@@ -43,7 +43,21 @@ export const adaptReviewToClient = (review) => {
   return adaptedReview;
 };
 
-const sortOffers = (offers, type, city) => {
+export const adaptUserToClient = (userData) => {
+  const adaptedUser = {
+    ...userData,
+    avatarUrl: userData.avatar_url,
+    isPro: userData.is_pro,
+  };
+
+  delete adaptedUser.avatar_url;
+  delete adaptedUser.is_pro;
+  delete adaptedUser.token;
+
+  return adaptedUser;
+};
+
+export const sortOffers = (offers, type, city) => {
   const offersByCity = offers.filter((offer) => offer.city.name === city);
   switch (type) {
     case SortType.LOW_TO_HIGH.name:
@@ -56,5 +70,3 @@ const sortOffers = (offers, type, city) => {
       return offersByCity;
   }
 };
-
-export {sortOffers};

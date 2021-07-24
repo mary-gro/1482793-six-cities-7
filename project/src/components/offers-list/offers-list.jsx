@@ -1,11 +1,13 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {ActionCreator} from '../../store/action';
+import {useDispatch} from 'react-redux';
 import Offer from '../offer/offer';
 import offerProp from '../offer/offer.prop';
 import PropTypes from 'prop-types';
+import {changeActiveOffer} from '../../store/action';
 
-function OffersList({offers, offersType, setActiveOfferId}) {
+function OffersList({offers, offersType}) {
+  const dispatch = useDispatch();
+
   return (
     <div className={`${offersType.listClass}`}>
       {
@@ -14,7 +16,7 @@ function OffersList({offers, offersType, setActiveOfferId}) {
             key={offer.id}
             offer={offer}
             offersType={offersType}
-            setActiveOfferId={setActiveOfferId}
+            setActiveOfferId={(payload) => dispatch(changeActiveOffer(payload))}
           />
         ))
       }
@@ -32,15 +34,6 @@ OffersList.propTypes = {
     imageWidth: PropTypes.number,
     imageHeight: PropTypes.number,
   }).isRequired,
-  setActiveOfferId: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setActiveOfferId(offerId) {
-    dispatch(ActionCreator.changeActiveOffer(offerId));
-  },
-});
-
-export {OffersList};
-
-export default connect(null, mapDispatchToProps)(OffersList);
+export default OffersList;

@@ -136,3 +136,10 @@ export const AuthorizationStatus = {
   NO_AUTH: 'NO_AUTH',
   UNKNOWN: 'UNKNOWN',
 };
+
+export const ReviewLength = {
+  MIN: 50,
+  MAX: 300,
+};
+
+export const FORM_ERROR_TEXT = 'An error occurred, please try again later.';
