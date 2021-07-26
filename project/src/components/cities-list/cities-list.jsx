@@ -1,10 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {ActionCreator} from '../../store/action';
+import {useSelector, useDispatch} from 'react-redux';
 import {Cities} from '../../const';
+import {getCity} from '../../store/offers/selectors';
+import {changeCity} from '../../store/action';
 
-function CitiesList({activeCity, onCityChange}) {
+function CitiesList() {
+  const dispatch = useDispatch();
+  const activeCity = useSelector(getCity);
+
   return (
     <div className="tabs">
       <section className="locations container">
@@ -13,11 +16,8 @@ function CitiesList({activeCity, onCityChange}) {
             <li className="locations__item" key={city.name}>
               <a
                 className={`locations__item-link tabs__item${city.name === activeCity ? ' tabs__item--active' : ''}`}
-                href="/#"
-                onClick={(evt) => {
-                  evt.preventDefault();
-                  onCityChange(city.name);
-                }}
+                href={`#${city}`}
+                onClick={() => dispatch(changeCity(city.name))}
               >
                 <span>{city.name}</span>
               </a>
@@ -29,20 +29,4 @@ function CitiesList({activeCity, onCityChange}) {
   );
 }
 
-CitiesList.propTypes = {
-  activeCity: PropTypes.string.isRequired,
-  onCityChange: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  activeCity: state.city,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onCityChange(city) {
-    dispatch(ActionCreator.changeCity(city));
-  },
-});
-
-export {CitiesList};
-export default connect(mapStateToProps, mapDispatchToProps)(CitiesList);
+export default React.memo(CitiesList);

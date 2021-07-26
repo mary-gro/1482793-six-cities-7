@@ -1,12 +1,17 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
-import PropTypes from 'prop-types';
 import {AuthorizationStatus} from '../../const';
 import {logout} from '../../store/api-actions';
+import {getAuthorizationStatus, getUserData} from '../../store/user/selectors';
 
-function Header({authorizationStatus, userEmail, logoutHandler}) {
+function Header() {
+  const dispatch = useDispatch();
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const userEmail = useSelector(getUserData).email;
+  const userAvatar = useSelector(getUserData).avatar;
+
   return (
     <header className="header">
       <div className="container">
@@ -27,7 +32,10 @@ function Header({authorizationStatus, userEmail, logoutHandler}) {
                         className="header__nav-link header__nav-link--profile"
                         to={AppRoute.FAVORITES}
                       >
-                        <div className="header__avatar-wrapper user__avatar-wrapper"/>
+                        <div
+                          className="header__avatar-wrapper user__avatar-wrapper"
+                          style={{backgroundImage: `url(${userAvatar})`, borderRadius: '50%'}}
+                        />
                         <span className="header__user-name user__name">{userEmail}</span>
                       </Link>
                     </li>
@@ -37,7 +45,7 @@ function Header({authorizationStatus, userEmail, logoutHandler}) {
                         to={AppRoute.MAIN}
                         onClick={(evt) => {
                           evt.preventDefault();
-                          logoutHandler();
+                          dispatch(logout());
                         }}
                       >
                         <span className="header__signout">Sign out</span>
@@ -64,22 +72,4 @@ function Header({authorizationStatus, userEmail, logoutHandler}) {
   );
 }
 
-Header.propTypes = {
-  authorizationStatus: PropTypes.string.isRequired,
-  userEmail: PropTypes.string,
-  logoutHandler: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-  userEmail: state.userEmail,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  logoutHandler() {
-    dispatch(logout());
-  },
-});
-
-export {Header};
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

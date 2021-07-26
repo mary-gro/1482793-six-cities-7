@@ -1,22 +1,24 @@
 import React, {useRef} from 'react';
-import PropTypes from 'prop-types';
+import {useSelector, useDispatch} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
 import {login} from '../../store/api-actions';
 import Header from '../header/header';
 import {AppRoute} from '../../const';
+import {getCity} from '../../store/offers/selectors';
 
-function LoginScreen({onSubmit}) {
+function LoginScreen() {
+  const dispatch = useDispatch();
+  const activeCity = useSelector(getCity);
   const loginRef = useRef();
   const passwordRef = useRef();
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    onSubmit({
+    dispatch(login({
       login: loginRef.current.value,
       password: passwordRef.current.value,
-    });
+    }));
   };
 
   return (
@@ -61,7 +63,7 @@ function LoginScreen({onSubmit}) {
           <section className="locations locations--login locations--current">
             <div className="locations__item">
               <Link className="locations__item-link" to={AppRoute.MAIN}>
-                <span>Amsterdam</span>
+                <span>{activeCity}</span>
               </Link>
             </div>
           </section>
@@ -71,15 +73,4 @@ function LoginScreen({onSubmit}) {
   );
 }
 
-LoginScreen.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit(userData) {
-    dispatch(login(userData));
-  },
-});
-
-export {LoginScreen};
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default LoginScreen;

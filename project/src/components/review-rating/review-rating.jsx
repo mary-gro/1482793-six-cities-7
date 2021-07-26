@@ -9,7 +9,7 @@ const RatingTitles = {
   1: 'terribly',
 };
 
-function ReviewRating({onFieldChange}) {
+function ReviewRating({onFieldChange, isDisabled}) {
   return (
     <div className="reviews__rating-form form__rating">
       {Object.entries(RatingTitles).reverse().map(([value, title]) => (
@@ -22,6 +22,7 @@ function ReviewRating({onFieldChange}) {
             type="radio"
             onChange={onFieldChange}
             required
+            disabled={isDisabled}
           />
           <label
             htmlFor={value <= 1 ? `${value}-star` : `${value}-stars`}
@@ -41,6 +42,7 @@ function ReviewRating({onFieldChange}) {
 
 ReviewRating.propTypes = {
   onFieldChange: PropTypes.func.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
 };
 
 export default ReviewRating;

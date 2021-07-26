@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {Switch, Route, Router as BrowserRouter} from 'react-router-dom';
-import {connect} from 'react-redux';
+import {Switch, Route} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 import MainScreen from '../main-screen/main-screen';
 import FavoritesScreen from '../favorites-screen/favorites-screen';
 import LoginScreen from '../login-screen/login-screen';
@@ -10,52 +9,51 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Loading from '../loading/loading';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
-import browserHistory from '../../browser-history';
+import {getIsDataLoaded} from '../../store/data/selectors';
+import {getAuthorizationStatus} from '../../store/user/selectors';
 
-function App({isDataLoaded, authorizationStatus}) {
+function App() {
+  const isDataLoaded = useSelector(getIsDataLoaded);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
-  if ((authorizationStatus === AuthorizationStatus.UNKNOWN) || !isDataLoaded) {
+  const isCheckedAuth = (auth) => auth === AuthorizationStatus.UNKNOWN;
+
+  if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return <Loading />;
   }
 
   return (
-    <BrowserRouter history={browserHistory}>
-      <Switch>
-        <Route exact path={AppRoute.MAIN}>
-          <MainScreen />
-        </Route>
-        <PrivateRoute exact path={AppRoute.FAVORITES}
-          render={() => <FavoritesScreen />}
-        />
-        <Route exact path={AppRoute.LOGIN}>
-          <LoginScreen />
-        </Route>
-        <Route exact path = {`${AppRoute.ROOM}/:id`}
-          render = {({match}) => {
-            const {id} = match.params;
-            return (
-              <RoomScreen id={id} />
-            );
-          }}
-        />
-        <Route>
-          <NotFoundScreen />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route exact path={AppRoute.MAIN}>
+        <MainScreen />
+      </Route>
+      <PrivateRoute
+        exact
+        path={AppRoute.FAVORITES}
+        redirect={AppRoute.LOGIN}
+        isAuth={authorizationStatus === AuthorizationStatus.AUTH}
+        render={() => <FavoritesScreen />}
+      />
+      <PrivateRoute
+        exact
+        path={AppRoute.LOGIN}
+        redirect={AppRoute.MAIN}
+        isAuth={authorizationStatus !== AuthorizationStatus.AUTH}
+        render={() => <LoginScreen />}
+      />
+      <Route exact path = {`${AppRoute.ROOM}/:id`}
+        render = {({match}) => {
+          const {id} = match.params;
+          return (
+            <RoomScreen id={id} />
+          );
+        }}
+      />
+      <Route>
+        <NotFoundScreen />
+      </Route>
+    </Switch>
   );
 }
 
-App.propTypes = {
-  isDataLoaded: PropTypes.bool.isRequired,
-  authorizationStatus: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  isDataLoaded: state.isDataLoaded,
-  authorizationStatus: state.authorizationStatus,
-});
-
-export {App};
-export default connect(mapStateToProps)(App);
-
+export default App;

@@ -1,8 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import {useSelector} from 'react-redux';
 import OffersList from '../offers-list/offers-list.jsx';
-import offerProp from '../offer/offer.prop';
 import {Cities, OffersType} from '../../const';
 import Header from '../header/header';
 import Map from '../map/map';
@@ -10,8 +8,16 @@ import CitiesList from '../cities-list/cities-list';
 import SortList from '../sort-list/sort-list';
 import EmptyOffersList from '../empty-offers-list/empty-offers-list';
 import {sortOffers} from '../../utils';
+import {getCity, getSortType, getActiveOffer} from '../../store/offers/selectors';
+import {getOffers} from '../../store/data/selectors';
 
-function MainScreen({offers, city, activeOfferId}) {
+function MainScreen() {
+  const initialOffers = useSelector(getOffers);
+  const city = useSelector(getCity);
+  const activeOfferId = useSelector(getActiveOffer);
+  const sortType = useSelector(getSortType);
+
+  const offers = sortOffers(initialOffers, sortType.name, city);
 
   return (
     <div className="page page--gray page--main">
@@ -48,17 +54,4 @@ function MainScreen({offers, city, activeOfferId}) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  offers: sortOffers(state.offers, state.sortType.name, state.city),
-  city: state.city,
-  activeOfferId: state.activeOfferId,
-});
-
-MainScreen.propTypes = {
-  offers: PropTypes.arrayOf(offerProp).isRequired,
-  city: PropTypes.string.isRequired,
-  activeOfferId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-};
-
-export {MainScreen};
-export default connect(mapStateToProps)(MainScreen);
+export default MainScreen;

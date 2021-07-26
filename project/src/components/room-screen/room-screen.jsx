@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../header/header';
 import ReviewForm from '../review-form/review-form';
@@ -10,15 +10,31 @@ import {OffersType, AuthorizationStatus} from '../../const';
 import {fetchOffer, fetchReviews, fetchNearbyOffers} from '../../store/api-actions';
 import {getRating} from '../../utils';
 import Loading from '../loading/loading';
-import offerProp from '../offer/offer.prop';
-import reviewProp from '../review/review.prop';
+import {getOffer, getReviews, getNearbyOffers, getIsOfferDataLoaded} from '../../store/data/selectors';
+import {getAuthorizationStatus} from '../../store/user/selectors';
+import {addFavorite} from '../../store/api-actions';
 
-function RoomScreen({id, currentOffer, getOffer, reviews, nearbyOffers, isOfferDataLoaded, authorizationStatus}) {
+function RoomScreen({id}) {
+  const dispatch = useDispatch();
+  const currentOffer = useSelector(getOffer);
+  const reviews = useSelector(getReviews);
+  const nearbyOffers = useSelector(getNearbyOffers);
+  const isOfferDataLoaded = useSelector(getIsOfferDataLoaded);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+
   useEffect(() => {
-    getOffer(id);
-  }, [id, getOffer]);
+    dispatch(fetchOffer(id));
+    dispatch(fetchReviews(id));
+    dispatch(fetchNearbyOffers(id));
+  }, [id, dispatch]);
 
   const {bedrooms, description, goods, host, images, isFavorite, isPremium, maxAdults, price, rating, title, type} = currentOffer;
+
+  const status = isFavorite ? 0 : 1;
+
+  const onBookmarkClick = () => {
+    dispatch(addFavorite(id, status));
+  };
 
   if (!isOfferDataLoaded) {
     return (
@@ -52,7 +68,7 @@ function RoomScreen({id, currentOffer, getOffer, reviews, nearbyOffers, isOfferD
                 <h1 className="property__name">
                   {title}
                 </h1>
-                <button className={`${isFavorite ? 'property__bookmark-button--active' : ''} property__bookmark-button button`} type="button">
+                <button className={`${isFavorite ? 'property__bookmark-button--active' : ''} property__bookmark-button button`} type="button" onClick={onBookmarkClick}>
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -138,29 +154,6 @@ function RoomScreen({id, currentOffer, getOffer, reviews, nearbyOffers, isOfferD
 
 RoomScreen.propTypes = {
   id: PropTypes.string,
-  currentOffer: offerProp,
-  reviews: PropTypes.arrayOf(reviewProp).isRequired,
-  nearbyOffers: PropTypes.arrayOf(offerProp),
-  authorizationStatus: PropTypes.string.isRequired,
-  getOffer: PropTypes.func.isRequired,
-  isOfferDataLoaded: PropTypes.bool,
 };
 
-const mapStateToProps = (state) => ({
-  currentOffer: state.offer,
-  reviews: state.reviews,
-  nearbyOffers: state.nearbyOffers,
-  authorizationStatus: state.authorizationStatus,
-  isOfferDataLoaded: state.isDataLoaded,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getOffer(id) {
-    dispatch(fetchOffer(id));
-    dispatch(fetchNearbyOffers(id));
-    dispatch(fetchReviews(id));
-  },
-});
-
-export {RoomScreen};
-export default connect(mapStateToProps, mapDispatchToProps)(RoomScreen);
+export default RoomScreen;
