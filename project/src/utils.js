@@ -6,6 +6,10 @@ const MAX_RATING = 5;
 export const getRating = (rating) => Math.round(rating) * PERCENTS / MAX_RATING;
 
 export const adaptOfferToClient = (offer) => {
+  if (offer?.fake) {
+    return offer;
+  }
+
   const adaptedOffer = {
     ...offer,
     host: {
@@ -30,6 +34,10 @@ export const adaptOfferToClient = (offer) => {
 };
 
 export const adaptReviewToClient = (review) => {
+  if (review?.fake) {
+    return review;
+  }
+
   const adaptedReview = {
     ...review,
     user: {
@@ -44,6 +52,10 @@ export const adaptReviewToClient = (review) => {
 };
 
 export const adaptUserToClient = (userData) => {
+  if (userData?.fake) {
+    return userData;
+  }
+
   const adaptedUser = {
     ...userData,
     avatarUrl: userData.avatar_url,

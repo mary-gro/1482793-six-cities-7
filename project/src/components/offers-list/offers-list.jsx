@@ -16,7 +16,7 @@ function OffersList({offers, offersType}) {
             key={offer.id}
             offer={offer}
             offersType={offersType}
-            setActiveOfferId={(payload) => dispatch(changeActiveOffer(payload))}
+            onOfferHover={(payload) => dispatch(changeActiveOffer(payload))}
           />
         ))
       }

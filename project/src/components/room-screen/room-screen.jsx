@@ -14,6 +14,8 @@ import {getOffer, getReviews, getNearbyOffers, getIsOfferDataLoaded} from '../..
 import {getAuthorizationStatus} from '../../store/user/selectors';
 import {addFavorite} from '../../store/api-actions';
 
+const MAX_IMAGE_COUNT = 6;
+
 function RoomScreen({id}) {
   const dispatch = useDispatch();
   const currentOffer = useSelector(getOffer);
@@ -32,7 +34,7 @@ function RoomScreen({id}) {
 
   const status = isFavorite ? 0 : 1;
 
-  const onBookmarkClick = () => {
+  const handleBookmarkClick = () => {
     dispatch(addFavorite(id, status));
   };
 
@@ -50,7 +52,7 @@ function RoomScreen({id}) {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {images.map((image) => (
+              {images.slice(0, MAX_IMAGE_COUNT).map((image) => (
                 <div className="property__image-wrapper" key={image}>
                   <img className="property__image" src={image} alt="Property"/>
                 </div>),
@@ -68,7 +70,7 @@ function RoomScreen({id}) {
                 <h1 className="property__name">
                   {title}
                 </h1>
-                <button className={`${isFavorite ? 'property__bookmark-button--active' : ''} property__bookmark-button button`} type="button" onClick={onBookmarkClick}>
+                <button className={`${isFavorite ? 'property__bookmark-button--active' : ''} property__bookmark-button button`} type="button" onClick={handleBookmarkClick}>
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

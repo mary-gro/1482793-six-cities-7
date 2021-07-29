@@ -17,7 +17,7 @@ function Header() {
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <Link className="header__logo-link" to={AppRoute.MAIN}>
+            <Link data-testid="header" className="header__logo-link" to={AppRoute.MAIN}>
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
             </Link>
           </div>
@@ -29,6 +29,7 @@ function Header() {
                   <React.Fragment>
                     <li className="header__nav-item user">
                       <Link
+                        data-testid="favorites"
                         className="header__nav-link header__nav-link--profile"
                         to={AppRoute.FAVORITES}
                       >
@@ -41,6 +42,7 @@ function Header() {
                     </li>
                     <li className="header__nav-item">
                       <Link
+                        data-testid="logout"
                         className="header__nav-link"
                         to={AppRoute.MAIN}
                         onClick={(evt) => {
