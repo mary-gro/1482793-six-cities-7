@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux';
 import ReviewRating from '../review-rating/review-rating';
 import {addReview} from '../../store/api-actions';
 import PropTypes from 'prop-types';
-import {ReviewLength, FORM_ERROR_TEXT} from '../../const';
+import {ReviewLength, Toast} from '../../const';
 
 function ReviewForm({id}) {
   const dispatch = useDispatch();
@@ -13,12 +13,12 @@ function ReviewForm({id}) {
   const [review, setReview] = useState({rating: '', text: ''});
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const onFieldChange = (evt) => {
+  const handleFieldChange = (evt) => {
     const {name, value} = evt.target;
     setReview({...review, [name]: value});
   };
 
-  const onFormSubmit = (evt) => {
+  const handleFormSubmit = (evt) => {
     evt.preventDefault();
     setIsDisabled(true);
     dispatch(addReview(id, {
@@ -30,19 +30,19 @@ function ReviewForm({id}) {
         formRef.current.reset();
       })
       .catch(() => {
-        toast.error(FORM_ERROR_TEXT, {
-          position: 'top-center',
-          autoClose: 3000,
+        toast.error(Toast.FORM_ERROR_TEXT, {
+          position: Toast.POSITION,
+          autoClose: Toast.AUTOCLOSE_TIME,
         });
       })
       .finally(() => setIsDisabled(false));
   };
 
   return (
-    <form className="reviews__form form" ref={formRef} action="#" method="post" onSubmit={onFormSubmit}>
+    <form className="reviews__form form" ref={formRef} action="#" method="post" onSubmit={handleFormSubmit}>
       <ToastContainer />
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <ReviewRating onFieldChange={onFieldChange} isDisabled={isDisabled} />
+      <ReviewRating onFieldChange={handleFieldChange} isDisabled={isDisabled} />
       <textarea
         className="reviews__textarea form__textarea"
         minLength={ReviewLength.MIN}
@@ -50,7 +50,7 @@ function ReviewForm({id}) {
         id="review"
         name="text"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onChange={onFieldChange}
+        onChange={handleFieldChange}
         value={review.text}
         disabled={isDisabled}
         required

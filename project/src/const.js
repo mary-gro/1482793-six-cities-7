@@ -142,4 +142,10 @@ export const ReviewLength = {
   MAX: 300,
 };
 
-export const FORM_ERROR_TEXT = 'An error occurred, please try again later.';
+export const Toast = {
+  POSITION: 'top-center',
+  AUTOCLOSE_TIME: 3000,
+  FORM_ERROR_TEXT: 'An error occurred, please try again later.',
+  PASSWORD_ERROR_TEXT: 'Password cannot consist of spaces and should have at least 1 symbol.',
+  EMAIL_ERROR_TEXT: 'Email should be correct.',
+};

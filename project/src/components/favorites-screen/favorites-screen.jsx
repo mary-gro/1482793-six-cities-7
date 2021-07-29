@@ -15,10 +15,16 @@ function FavoritesScreen() {
 
   useEffect(() => {
     dispatch(fetchFavorites());
-  }, [dispatch]);
+  });
 
   if (favoriteOffers.length === 0) {
-    return <EmptyFavoritesList />;
+    return (
+      <div className="page page--favorites-empty">
+        <Header/>
+        <EmptyFavoritesList />
+        <Footer/>
+      </div>
+    );
   }
 
   const favoriteCities = Array.from(new Set(favoriteOffers.map((offer) => offer.city.name)));

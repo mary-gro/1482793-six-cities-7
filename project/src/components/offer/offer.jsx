@@ -8,12 +8,12 @@ import {AppRoute} from '../../const';
 import offerProp from './offer.prop';
 import {addFavorite} from '../../store/api-actions';
 
-function Offer({offer, offersType, setActiveOfferId}) {
+function Offer({offer, offersType, onOfferHover}) {
   const {id, isFavorite, isPremium, previewImage, price, rating, title, type} = offer;
   const dispatch = useDispatch();
-  const status = isFavorite ? 0 : 1;
+  const status = Number(!isFavorite);
 
-  const onBookmarkClick = () => {
+  const handleBookmarkClick = () => {
     dispatch(addFavorite(id, status));
   };
 
@@ -21,10 +21,10 @@ function Offer({offer, offersType, setActiveOfferId}) {
     <article
       className={`${offersType.class} place-card`}
       onMouseEnter={offersType.type === OffersType.MAIN.type ? () => {
-        setActiveOfferId(id);
+        onOfferHover(id);
       } : null}
       onMouseLeave={offersType.type === OffersType.MAIN.type ? () => {
-        setActiveOfferId(null);
+        onOfferHover(null);
       } : null}
     >
       {(isPremium && offersType.type === OffersType.MAIN.type)
@@ -44,7 +44,7 @@ function Offer({offer, offersType, setActiveOfferId}) {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`${isFavorite ? 'place-card__bookmark-button--active' : ''} place-card__bookmark-button button`} type="button" onClick={onBookmarkClick}>
+          <button className={`${isFavorite ? 'place-card__bookmark-button--active' : ''} place-card__bookmark-button button`} type="button" onClick={handleBookmarkClick}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -78,7 +78,7 @@ Offer.propTypes = {
     imageWidth: PropTypes.number.isRequired,
     imageHeight: PropTypes.number.isRequired,
   }).isRequired,
-  setActiveOfferId: PropTypes.func.isRequired,
+  onOfferHover: PropTypes.func.isRequired,
 };
 
 export default React.memo(Offer);

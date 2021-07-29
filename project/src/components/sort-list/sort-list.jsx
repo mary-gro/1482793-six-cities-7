@@ -10,7 +10,7 @@ function SortList() {
   const [isListOpened, setIsListOpened] = useState(false);
   const sortType = useSelector(getSortType);
 
-  const sortingClickHandler = (payload) => {
+  const handleSortingClick = (payload) => {
     setIsListOpened(false);
     dispatch(sortOffers(payload));
   };
@@ -35,7 +35,7 @@ function SortList() {
               key={type}
               type={type}
               isActive={sortType === type}
-              onClick={() => sortingClickHandler(SortType[type])}
+              onClick={() => handleSortingClick(SortType[type])}
             />
           ))
         }
